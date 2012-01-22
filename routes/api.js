@@ -78,7 +78,7 @@ innards.createSession = function(userId, res){
     );
 }
 
-api.registerUser = function(parameters){
+api.registerUser = function(parameters,res){
     var user = new userModel(); 
     user.username=parameters.username;
     user.passHash=parameters.passHash;
@@ -86,7 +86,7 @@ api.registerUser = function(parameters){
     user.save( function(error){
         if(error) {
             console.log('something bad happened in registering the user',error);
-            res.send({register:'unsuccessful'});
+            res.send({register:'unsuccessful',error:'you may have already registered'});
         }else{
             console.log('successfully registered');
             res.send({register:'successful'});
@@ -151,9 +151,13 @@ api.removeLinks = function(parameters, res){
 }
 
 api.getLinks = function(parameters, res){
+    console.log(parameters);
+    if(parameters.sessionId == 'undefined'){
+        res.send({error:'login'});
+        return;
+    }
     sessionModel.findOne({sessionId:parameters.sessionId}, function(error, user) {
         if (error) console.log('something bad happened in getting the user for thelinks',error);
-
         linkModel.find({userId:user.userId},function(error,links){
             if (error) console.log('something bad happened in getting the links',error);
             res.send({links:links});

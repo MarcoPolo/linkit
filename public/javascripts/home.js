@@ -11,6 +11,8 @@ homeWrapper = function(){
 
     function printLinks(data){
         var links = data.links;
+        console.log(data.error);
+        if (data.error == 'login') window.location = '/login';
         for (var i = 0; i < links.length; i++) {
             $(linkContainer).append('<span class=title id='+links[i].title+'>'+links[i].title +'</span> &nbsp&nbsp <span class=shortcut>'+ links[i].shortcut+'</span>');
             $(linkContainer).append('<br/>');

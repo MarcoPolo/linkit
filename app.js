@@ -35,6 +35,7 @@ app.configure('production', function(){
 
 app.get('/', routes.index);
 app.get('/login', routes.login);
+app.get('/register', routes.register);
 app.get('/home', routes.home);
 app.get('/go/:shortcut', apiRoute.router);
 app.post('/api/:signature', apiRoute.api);
