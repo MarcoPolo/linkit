@@ -139,6 +139,16 @@ api.createLink = function(parameters, res){
     });
 }
 
+api.removeLinks = function(parameters, res){
+    sessionModel.findOne({sessionId:parameters.sessionId}, function(error, user) {
+        if (error) console.log('something bad happened in getting the user for thelinks',error);
+
+        linkModel.remove({userId:user._id,_id:parameters.linkId},function(error){
+            if (error) console.log('something bad happened in removing the link',error);
+        });
+    });
+}
+
 api.getLinks = function(parameters, res){
     sessionModel.findOne({sessionId:parameters.sessionId}, function(error, user) {
         if (error) console.log('something bad happened in getting the user for thelinks',error);
