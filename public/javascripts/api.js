@@ -2,6 +2,10 @@ function api(apiPathName){
     this.apiPathName = apiPathName;
 }
 
+function getSession() { 
+    return document.cookie.substr(document.cookie.indexOf('sessionid')+10,document.cookie.indexOf('sessionid')+41);
+}
+
 if (!api.prototype.history){
     api.prototype.history = [];
 }

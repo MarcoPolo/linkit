@@ -1,27 +1,27 @@
-var username = $("#user").val(),
-    password = $("#pass").val();
+$(document).ready(function(){
+    $("#login").click(login);
+});
 
 
-var passHash = (new jsSHA(password)).getHash('SHA-256','HEX');
-loginApi = new apiWrapper('/api');
-loginApi.callApi('login',{username:username,hash:passHash},o
+
 
 
 function login(){
 var username = $("#user").val(),
     password = $("#pass").val();
 
-
 var passHash = (new jsSHA(password)).getHash('SHA-256','HEX');
 loginApi = new apiWrapper('/api');
-loginApi.callApi('login',{username:username,hash:passHash},o
+loginApi.callAPI('login',{username:username,passHash:passHash},checkLogin);
 }
 
 function checkLogin(data){
     if (data.error){
         console.log('sorry brah, wrong username/pass');
-    }else{
-        document.cookie="sessionid="+data.sessionid;
+    }else if(data.login == "successful"){
+        //woo you are logged in!
+        TINY.box.show({html:'<center><p>success</p></center>', height:50,width:80,openjs:function(){$('.tinner').css('background','lightBlue')}});
+        document.cookie="sessionid="+data.sessionId;
     }
 
 }
