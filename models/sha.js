@@ -1160,7 +1160,5 @@
 		}
 	};
 
-	window.jsSHA = jsSHA;
+	exports.jsSHA = jsSHA;
 }());
-
-exports.jsSHA = jsSHA;

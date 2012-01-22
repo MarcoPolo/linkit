@@ -12,7 +12,7 @@ function apiWrapper(apiPathName){
     var publicKey = '009DBDD9C9732F59445E831AEE65717A072FA96A2D7082E0425A3C2061EB6013';
     var secretKey = '11A112F200DD31331C5D538101E00E4A55F661F52F6F20E3FFA42E74A4FCC957';
 
-    var debug = true;
+    var debug = true
 
 
     var history ;
@@ -29,12 +29,12 @@ function apiWrapper(apiPathName){
         };
         
         var signature = getSignature(requestObj);
-        var requestURL = this.apiPathName + "?signature=" + signature;
+        var requestURL = this.apiPathName + "/" + signature;
         if(debug){
             recordHistory(method, paramObj, callback, Date(), this.apiPathName);
         }
 
-        $.post(requestURL, JSON.stringify(requestObj), callback);
+        $.post(requestURL, (requestObj), callback);
     }
 
     var printHistory = function(){
@@ -79,7 +79,6 @@ function apiWrapper(apiPathName){
     api.prototype.printData = printData;
     api.prototype.printHistory = printHistory;
     api.prototype.replayHistory = replayHistory;
-    api.prototype.exportData = exportData;
 
 
     return new api(apiPathName);
