@@ -15,6 +15,7 @@ app.configure(function(){
   app.set('views', __dirname + '/views');
   app.set('view engine', 'jade');
   app.use(express.bodyParser());
+  app.use(express.cookieParser());
   app.use(express.methodOverride());
   app.use(app.router);
   app.use(express.static(__dirname + '/public'));
@@ -35,6 +36,7 @@ app.configure('production', function(){
 app.get('/', routes.index);
 app.get('/login', routes.login);
 app.get('/home', routes.home);
+app.get('/go/:shortcut', apiRoute.router);
 app.post('/api/:signature', apiRoute.api);
 
 app.listen(3000);

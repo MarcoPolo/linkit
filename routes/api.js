@@ -7,6 +7,7 @@ var apiWrapper = require('../models/api').apiWrapper;
     BSON = mongo.BSOM,
     OID = mongo.ObjectID;
     twoWeekDelta = 1209600000;
+    hostname = 'hexxie.com';
 
 
 mongoose.connect('mongodb://localhost/linkit');
@@ -126,7 +127,7 @@ api.createLink = function(parameters, res){
         link.link = parameters.link;
         link.title = parameters.title;
         link.shortcut = parameters.shortcut;
-        link.userId = user._id;
+        link.userId = user.userId;
         link.save( function(error){
             if(error) {
                 console.log('something bad happened in creating link for the user',error);
@@ -153,11 +154,49 @@ api.getLinks = function(parameters, res){
     sessionModel.findOne({sessionId:parameters.sessionId}, function(error, user) {
         if (error) console.log('something bad happened in getting the user for thelinks',error);
 
-        linkModel.find({userId:user._id},function(error,links){
+        linkModel.find({userId:user.userId},function(error,links){
             if (error) console.log('something bad happened in getting the links',error);
             res.send({links:links});
         });
     });
+}
+
+exports.router = function(req, res){
+    var shortcut=req.params.shortcut;
+    var sessionId=req.cookies.sessionid;
+    console.log(req.headers.host);
+    if(sessionId){
+        sessionModel.findOne({sessionId:sessionId}, function(error, user) {
+            if (error) console.log('something bad happened in getting the routing',error);
+            linkModel.findOne({userId:user.userId,shortcut:shortcut}, function(error, link){
+                res.redirect(link.link);
+            });
+        });
+    }else{
+        var host=req.headers.host;
+        var endIndex = host.indexOf(hostname)-1;
+        var username = host.substr(0,endIndex);
+        userModel.findOne({username:username}, function(error, user) {
+            if (error) console.log('something bad happened in getting the routing',error);
+            console.log(user._id);
+            console.log(shortcut);
+            if(user){
+                linkModel.findOne({"userId":user._id,shortcut:shortcut}, function(error, link){
+                    if (error) console.log('something bad happened in getting the routing',error);
+
+                    console.log(link);
+                    if(link){
+                        res.redirect(link.link);
+                    }else{
+                        res.send('');
+                    }
+                });
+            }else{
+                res.redirect('/login');
+            }
+        });
+    }
+
 }
 
 

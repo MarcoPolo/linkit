@@ -5,6 +5,9 @@
 
 
 exports.index = function(req, res){
+    console.log(req.url);
+    console.log(req.headers);
+    console.log(req.cookies);
     res.render('index', { title: 'Express' })
 };
 
