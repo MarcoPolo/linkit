@@ -1,8 +1,89 @@
+html {
+    background: url(/images/background.png);
+    height:100%;
+}
+
+#title {
+  position: absolute;
+  font-family: 'Magra', sans-serif;
+  top:0px;
+}
+
+.button{
+  background: url(/images/button.png);
+  display: block;
+  height: 140px ;
+  width: 220px;
+  margin-top:66px;
+  margin-left:9%;
+  margin-right:9%;
+
+  float:left;
+  
+}
+
+.buttonText{
+  font-family: 'Amaranth', sans-serif;
+  font-size: 40px;
+  color:white;
+  margin-top: 38px;
+  text-shadow: grey 1px 1px;
+}
+
+#registerText{
+  color:white;
+}
+
 body {
+  margin:0px;
   padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  min-height: 100%;
+  background: -webkit-gradient(linear, left top, left bottom, from(rgba(255,255,255,0.5)), to(rgba(255,255,255,0.0)))
+}
+
+.center{
+  position: absolute;
+  left:0;
+  width: 80%;
+  margin-left: 10%;
+}
+
+#banner {
+  display: block;
+  top 10px;
+  border-radius: 10px;
+  height: 300px;
+  background: url(/images/banner.png);
+}
+
+#breaker {
+  top:380px;  
+  display: block;
+  background: black;
+  height: 10px;
+  
+}
+
+#container {
+  border:  dotted;
+  top:420px;
+  min-height: 100px;
 }
 
 a {
   color: #00B7FF;
 }
+
+label {
+  margin-right: 20px;
+}
+
+input{
+  position: relative;
+}
+
+#user {
+  margin-top: 50px;
+}
+
