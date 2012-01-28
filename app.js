@@ -5,9 +5,12 @@
 
 var express = require('express')
   , routes = require('./routes')
-  , apiRoute = require('./routes/api.js')
+  , less = require('less')
+  , apiRoute = require('./routes/api.js');
 
 var app = module.exports = express.createServer();
+
+//less
 
 // Configuration
 
@@ -18,6 +21,7 @@ app.configure(function(){
   app.use(express.cookieParser());
   app.use(express.methodOverride());
   app.use(app.router);
+  app.use(express.compiler({ src: __dirname + '/public', enable: ['less'] }));
   app.use(express.static(__dirname + '/public'));
 });
 
@@ -33,8 +37,11 @@ app.configure('production', function(){
 
 // Routes
 
+app.get('/:shortcut', apiRoute.router);
 app.get('/', routes.index);
+app.get('/index', routes.index);
 app.get('/login', routes.login);
+app.get('/loginbox', routes.loginbox);
 app.get('/register', routes.register);
 app.get('/home', routes.home);
 app.get('/go/:shortcut', apiRoute.router);

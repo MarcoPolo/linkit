@@ -3,7 +3,9 @@ function api(apiPathName){
 }
 
 function getSession() { 
-    return document.cookie.substr(document.cookie.indexOf('sessionid')+10,document.cookie.indexOf('sessionid')+41);
+    if (document.cookie.indexOf('sessionid') != -1){
+        return document.cookie.substr(document.cookie.indexOf('sessionid')+10,document.cookie.indexOf('sessionid')+41);
+    }
 }
 
 if (!api.prototype.history){

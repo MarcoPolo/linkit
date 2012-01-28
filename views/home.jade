@@ -5,5 +5,15 @@ script(src="/javascripts/sha.js")
 script(src="/javascripts/tinybox2/packed.js")
 script(src="/javascripts/home.js")
 link(rel='stylesheet', href='/javascripts/tinybox2/style.css')
-
 div(id='links')
+
+br
+label(for="title") Title
+label(for="link") Link
+label(for="shortcut") Shortcut
+br
+input(type='text',id='linkTitle')
+input(type='text',id='linkUrl')
+input(type='text',id='linkShortcut')
+button(id='createLink') createLink
+
