@@ -37,7 +37,9 @@ app.configure('production', function(){
 
 // Routes
 
+app.get('/:shortcut', apiRoute.router);
 app.get('/', routes.index);
+app.get('/index', routes.index);
 app.get('/login', routes.login);
 app.get('/loginbox', routes.loginbox);
 app.get('/register', routes.register);

@@ -7,7 +7,7 @@ var apiWrapper = require('../models/api').apiWrapper;
     BSON = mongo.BSOM,
     OID = mongo.ObjectID;
     twoWeekDelta = 1209600000;
-    hostname = 'hexxie.com';
+    hostname = 'lynkit.org';
 
 
 mongoose.connect('mongodb://localhost/linkit');
@@ -167,9 +167,24 @@ api.getLinks = function(parameters, res){
 }
 
 exports.router = function(req, res){
-    var shortcut=req.params.shortcut;
-    var sessionId=req.cookies.sessionid;
+    var shortcut=req.params.shortcut
+    , sessionId=req.cookies.sessionid
+    , host=req.headers.host
+    , endIndex = host.indexOf(hostname)-1
+    , username = host.substr(0,endIndex);
     console.log(req.headers.host);
+    console.log(req.url);
+    console.log(endIndex);
+    console.log('user is',username);
+    if (username=='' && req.url.indexOf('/go/') == -1){ //fix this index of
+        console.log('user is',username);
+        res.send('sdfa');
+        return;
+    }
+    if(username != '' && shortcut == ''){ //user should be redirected to home in no shortcut is specified
+        res.redirect('/home');
+        return;
+    }
     if(sessionId){
         sessionModel.findOne({sessionId:sessionId}, function(error, user) {
             if (error) console.log('something bad happened in getting the routing',error);
@@ -178,9 +193,6 @@ exports.router = function(req, res){
             });
         });
     }else{
-        var host=req.headers.host;
-        var endIndex = host.indexOf(hostname)-1;
-        var username = host.substr(0,endIndex);
         console.log(username);
         userModel.findOne({username:username}, function(error, user) {
             if (error) console.log('something bad happened in getting the routing',error);
