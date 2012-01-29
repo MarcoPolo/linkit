@@ -1,4 +1,49 @@
 !!!
 html
   title=title
-  include index.html
+  head
+    <!-- Le fav and touch icons -->
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+    <link rel="stylesheet/less" href="/stylesheets/bootstrap.less">
+
+    <!-- included js-->
+    <script src=/javascripts/jquery.js></script>
+    <script src=/javascripts/less.js></script>
+    <script src=/javascripts/login.js></script>
+    <script src=/javascripts/register.js></script>
+    <script src="/javascripts/api.js"></script>
+    <script src="/javascripts/sha.js"></script>
+    <script src="/javascripts/bootstrap-alerts.js"></script>
+    <script src="/javascripts/bootstrap-modal.js"></script>
+    <script type="text/javascript" src="http://www.google.com/recaptcha/api/js/recaptcha_ajax.js"></script>
+    script(type="text/javascript", charset="utf-8")
+      $(document).ready(function(){
+
+          $('#lynks').click(function(){
+            $('#lynks').addClass('active');
+            $('#home').removeClass('active');
+            $('#indexContent').fadeOut(function(){$('#linkContent').fadeIn();});
+          });
+          $('#home').click(function(){
+            $('#home').addClass('active');
+            $('#lynks').removeClass('active');
+            $('#linkContent').fadeOut(function(){$('#indexContent').fadeIn();});
+          });
+
+      });
+
+
+    <meta charset="utf-8">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+
+  include ../public/stylesheets/custom.css
+
+  body!=body

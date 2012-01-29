@@ -21,7 +21,6 @@ var app = module.exports = express.createServer();
 app.configure(function(){
   app.set('views', __dirname + '/views');
   app.set('view engine', 'jade');
-  app.set('view options', {layout:false});
   app.use(express.bodyParser());
   app.use(express.cookieParser());
   app.use(express.methodOverride());
@@ -42,11 +41,11 @@ app.configure('production', function(){
 
 // Routes
 
+app.get('/loginbox', routes.loginbox);
 app.get('/:shortcut', apiRoute.router);
 app.get('/', routes.index);
 app.get('/index', routes.index);
 app.get('/login', routes.login);
-app.get('/loginbox', routes.loginbox);
 app.get('/register', routes.register);
 app.get('/home', routes.home);
 app.get('/go/:shortcut', apiRoute.router);

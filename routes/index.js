@@ -8,10 +8,7 @@ var reCaptcha = require('recaptcha-async').reCaptcha
 
 
 exports.index = function(req, res){
-    console.log(req.url);
-    console.log(req.headers);
-    console.log(req.cookies);
-    res.render('layout.jade', { title: 'lynkit' })
+    res.render('index.jade', { title: 'lynkit' , loggedin: '', user:'test'})
 };
 
 
@@ -19,11 +16,11 @@ exports.login = function(req, res){
     res.render('login', { title: 'Login:' })
 };
 exports.loginbox = function(req, res){
-    res.render('login', { title: 'Login:' })
+    res.render('index', { title: 'Home:' })
 };
 
 exports.home = function(req, res){
-    res.render('home', { title: 'Home:' })
+    res.render('index', { title: 'Home:' })
 };
 
 exports.register = function(req, res){

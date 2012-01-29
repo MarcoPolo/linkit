@@ -1,20 +1,73 @@
 !!! 5
-h1(class='center', id='title')= title
-div(class='center', id='banner')
-    p Welcome to #{title}
-    div(id="buttons")
-        span(class='button')
-            center
-                p(class='buttonText') Register
-        span(class='button')
-            center
-                p(class='buttonText') Login
-        span(class='button')
-            center
-                 p(class='buttonText') About
+body
+  .topbar
+    .fill
+      .container
+        a(style="font-family: 'Magra', sans-serif",class="brand",href="#") lynkit.org
+        ul(class="nav")
+          li(class="active", id="home")
+            a(href="#") Home
+          li(class="", id="lynks")
+            a(href="#") Lynks
+          //
+            li(class="", id="home")
+              a(href="#") Contact
 
+        - if (loggedin)
+          form(action="#", class="pull-right")
+            input(class="input-small", id="user", type="text", placeholder="Username")
+            input(class="input-small", id="pass", type="password", placeholder="Password")
+            
+        - else 
+          p(class="pull-right",style="font-family: 'Magra', sans-serif;color: white;font-size: 16px;") Welcome, #{user}   
+            
 
-div(class='center', id='breaker')
-div(class='center', id='container')
-script
-    console.log('hello world #{title}');
+  div(class="container",id="container1")  
+    .content
+      .page-header
+        h1(style="font-family: 'Magra', sans-serif") lynkit \ 
+          small \ keep track of the one site
+      #indexContent
+        .row
+          .span8
+            h2 How it works:
+          .span4
+            h3 Registration
+              form(action="#", class="pull-right")
+                .clearfix
+                  .input-prepend
+                    span(class="add-on") user
+                    input(class="medium", id="userReg", name="prependedInput", size="16", type="text")
+                  span(class="help-block", id="userReg") Try to keep it short!
+                .clearfix
+                  .input-prepend
+                    span(class="add-on") pass
+                    input(class="medium", id="passReg", name="prependedInput", size="16", type="password")
+                  span(class="help-block", id="passReg") This is optional!
+                .clearfix
+                  .input-prepend
+                    span(class="add-on") email
+                    input(class="medium", id="passReg", name="prependedInput", size="16", type="password")
+                  span(class="help-block", id="emailReg") This is also optional!
+
+                #captcha-modal(class="modal hide fade")
+                  .modal-header
+                    a(href="#", class="close")&times;
+                    h3 One more thing...
+                  .modal-body
+                    p I trust you, but my creator does not.
+                    #captcha
+                  .modal-footer
+                    a(id="captchaSubmit", href="#", class="btn info") Sign Up
+                a(class="btn info", data-controls-modal="captcha-modal", data-backdrop="static") Sign Up!
+
+      #linkContent(style="display:none; min-height:500px")
+        .row
+          .span12
+            h2 Your links:
+        .row
+          .span12
+            p lolol
+
+      
+    footer 

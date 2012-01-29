@@ -215,7 +215,7 @@ exports.router = function(req, res){
     console.log('user is',username);
     if (username=='' && req.url.indexOf('/go/') == -1){ //fix this index of
         console.log('user is',username);
-        res.send('sdfa');
+        res.render('index', { title: 'Home:' })
         return;
     }
     if(username != '' && shortcut == ''){ //user should be redirected to home in no shortcut is specified
