@@ -13,6 +13,22 @@
     <script src="/javascripts/bootstrap-alerts.js"></script>
     <script src="/javascripts/bootstrap-modal.js"></script>
     <script type="text/javascript" src="http://www.google.com/recaptcha/api/js/recaptcha_ajax.js"></script>
+    <script type="text/javascript" charset="utf-8">
+      $(document).ready(function(){
+
+          $('#lynks').click(function(){
+            $('#lynks').addClass('active');
+            $('#home').removeClass('active');
+            $('#indexContent').fadeOut(function(){$('#linkContent').fadeIn();});
+          });
+          $('#home').click(function(){
+            $('#home').addClass('active');
+            $('#lynks').removeClass('active');
+            $('#linkContent').fadeOut(function(){$('#indexContent').fadeIn();});
+          });
+
+      });
+    </script>
 
 
     <meta charset="utf-8">
@@ -93,8 +109,8 @@
         <div class="container">
           <a style="font-family: 'Magra', sans-serif" class="brand" href="#">lynkit.org</a>
           <ul class="nav">
-            <li class="active"><a href="#">Home</a></li>
-            <li><a href="#about">About</a></li>
+            <li class="active" id=home><a href="#">Home</a></li>
+            <li id=lynks><a href="#lynk">Lynks</a></li>
             <li><a href="#contact">Contact</a></li>
           </ul>
           <form action="#" class="pull-right">
@@ -106,66 +122,79 @@
       </div>
     </div>
 
-    <div class="container">
 
-      <div class="content">
+    <div class="container" id=container1>
+
+      <div class="content" >
         <div class="page-header">
           <h1 style="font-family: 'Magra', sans-serif">lynkit <small>keep track of that one site</small></h1>
         </div>
-        <div class="row">
-          <div class="span8">
-            <h2>How it works:</h2>
-          </div>
-          <div class="span4">
-            <h3>Registration</h3>
-              <form action="#" class="pull-right">
-                <div class="clearfix">
-                <div class="input-prepend">
-                  <span class="add-on">user</span>
-                  <input class="medium" id="userReg" name="prependedInput" size=16 type=text>
-                </div>
-                <span class="help-block">Try to keep it short!</span>
+        <div id=indexContent>
+            <div class="row" id=indexContent>
+              <div class="span8">
+                <h2>How it works:</h2>
               </div>
-                
-                <div class="clearfix">
-                  <div class="input-prepend">
-                    <span class="add-on">pass</span>
-                    <input class="medium" id="passReg" name="prependedInput" size=16 type=password>
+              <div class="span4">
+                <h3>Registration</h3>
+                  <form action="#" class="pull-right">
+                    <div class="clearfix">
+                    <div class="input-prepend">
+                      <span class="add-on">user</span>
+                      <input class="medium" id="userReg" name="prependedInput" size=16 type=text>
+                    </div>
+                    <span class="help-block">Try to keep it short!</span>
                   </div>
-                  <span class="help-block">This is optional!</span>
-                </div>
+                    
+                    <div class="clearfix">
+                      <div class="input-prepend">
+                        <span class="add-on">pass</span>
+                        <input class="medium" id="passReg" name="prependedInput" size=16 type=password>
+                      </div>
+                      <span class="help-block">This is optional!</span>
+                    </div>
 
-                <div class="clearfix">
-                  <div class="input-prepend">
-                    <span class="add-on">email:</span>
-                    <input class="medium" id="emailReg" name="prependedInput" size=16 type=text>
-                  </div>
-                  <span class="help-block">So is this!</span>
-                </div>
+                    <div class="clearfix">
+                      <div class="input-prepend">
+                        <span class="add-on">email:</span>
+                        <input class="medium" id="emailReg" name="prependedInput" size=16 type=text>
+                      </div>
+                      <span class="help-block">So is this!</span>
+                    </div>
 
-                <div id="captcha-modal" class="modal hide fade">
-                  <div class="modal-header">
-                    <a href="#" class="close">&times;</a>
-                    <h3>One more thing...</h3>
-                  </div>
-                  <div class="modal-body">
-                    <p>I trust you, but my creator does not.</p>
-                    <div id=captcha></div>
-                  </div>
-                  <div class="modal-footer">
-                    <a id="captchaSubmit" href="#" class="btn info">Sign Up</a>
-                  </div>
-                </div>
-                <a class="btn info" data-controls-modal="captcha-modal" data-backdrop="static" >Sign Up!</a>
-              </form>
+                    <div id="captcha-modal" class="modal hide fade">
+                      <div class="modal-header">
+                        <a href="#" class="close">&times;</a>
+                        <h3>One more thing...</h3>
+                      </div>
+                      <div class="modal-body">
+                        <p>I trust you, but my creator does not.</p>
+                        <div id=captcha></div>
+                      </div>
+                      <div class="modal-footer">
+                        <a id="captchaSubmit" href="#" class="btn info">Sign Up</a>
+                      </div>
+                    </div>
+                    <a class="btn info" data-controls-modal="captcha-modal" data-backdrop="static" >Sign Up!</a>
+                  </form>
+              </div>
+            </div>
+        </div>
+        <div id=linkContent style="display:none; min-height:500px">
+          <div class="row">
+            <div class="span12">
+              <h2>Your links:</h2>
+            </div>
+          </div>
+          <div class="row">
+            <div class="span12">
+              <p>lolool</p>
+            </div>
           </div>
         </div>
       </div>
-
       <footer>
       </footer>
 
     </div> <!-- /container -->
-
   </body>
 
