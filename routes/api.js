@@ -1,15 +1,20 @@
 var apiWrapper = require('../models/api').apiWrapper;
     jsSHA = require('../models/sha').jsSHA,
     mongo = require('mongodb').Db,
-    mongoose = require('mongoose')
+    mongoose = require('mongoose') ,
+    reCaptcha = require('recaptcha-async').reCaptcha ,
+    recaptcha = new reCaptcha(),
     Db = mongo.Db,
     Server = mongo.Server,
     BSON = mongo.BSOM,
-    OID = mongo.ObjectID;
-    twoWeekDelta = 1209600000;
-    hostname = 'lynkit.org';
+    OID = mongo.ObjectID,
+    twoWeekDelta = 1209600000,
+    hostname = 'lynkit.org',
+    capprivatekey = '6LdPvMwSAAAAAHcFUNMXdxHxnfej693NzIZ1EHH5',
+    cappublickey = '6LdPvMwSAAAAALHpuivE73WXJOaokOX7ZZ5-Na9C';
 
 
+//specify the db we are using by just reffering it
 mongoose.connect('mongodb://localhost/linkit');
 
 var Schema = mongoose.Schema,
@@ -66,33 +71,65 @@ innards.createSession = function(userId, res){
                 session.userId = userId;
                 session.sessionId = innards.randomId();
                 session.save( function(error){
-                            if(error) console.log('something bad happened in registering the session',error);
-                            else console.log('saved session');
+                  if(error) console.log('something bad happened in registering the session',error);
+                  else{
+                    console.log('saved session');
+                    res.send({login:'successful',sessionId:sessionId});
+                  }
                 });
                 var sessionId=session.sessionId
                 console.log('session is',session.sessionId);
             }
-            res.send({login:'successful',sessionId:sessionId});
             
         }
     );
 }
 
-api.registerUser = function(parameters,res){
-    var user = new userModel(); 
-    user.username=parameters.username;
-    user.passHash=parameters.passHash;
-    if(parameters.email) user.email=parameters.email;
-    user.save( function(error){
-        if(error) {
-            console.log('something bad happened in registering the user',error);
-            res.send({register:'unsuccessful',error:'you may have already registered'});
-        }else{
-            console.log('successfully registered');
-            res.send({register:'successful'});
-        }
-    });
+innards.verifyCaptcha = function(parameters, res, req, callback){
+ console.log('checking captcha'); 
 
+  recaptcha.checkAnswer(
+     capprivatekey, 
+     req.connection.remoteAddress, 
+     parameters.challenge, 
+     parameters.response,
+     parameters,
+     res
+  );
+
+}
+
+
+innards.registerUser = function(){
+  return function (captchaResponse, parameters, res){
+    //if(captchaResponse.is_valid && captchaResponse.error == "success"){
+    console.log(parameters)
+    if(captchaResponse){
+      html = "valid answer";
+      var user = new userModel(); 
+      user.username=parameters.username;
+      user.passHash=parameters.passHash;
+      console.log('the captcha info is',parameters.challenge,parameters.response);
+      if(parameters.email) user.email=parameters.email;
+      user.save( function(error){
+        if(error) {
+          console.log('something bad happened in registering the user',error);
+          res.send({register:"error",error:"sorry something bad happened in registration"});
+        }else{
+          console.log('successfully registered');
+          res.send({register:"successful",error:""});
+        }
+      });
+    }else{
+      console.log('captcha was false'); 
+      res.send({register:"error",error:"incorrect captcha"});
+    }
+  }
+}
+
+recaptcha.on('data',innards.registerUser());
+api.registerUser = function(parameters,res, req){
+  innards.verifyCaptcha(parameters, res,req, innards.registerUser);
 }
 
 
@@ -210,7 +247,7 @@ exports.router = function(req, res){
                     }
                 });
             }else{
-                res.redirect('/login');
+                res.redirect('/');
             }
         });
     }
@@ -222,6 +259,6 @@ exports.api = function(req, res){
     var a = new apiWrapper('dfda');
     
     var sigcheck=a.checkSignature(req.body,req.params.signature,jsSHA);
-    if(sigcheck && api.hasOwnProperty(req.body.method)) api[req.body.method](req.body.parameters,res);
+    if(sigcheck && api.hasOwnProperty(req.body.method)) api[req.body.method](req.body.parameters,res, req);
     console.log(sigcheck);
 };

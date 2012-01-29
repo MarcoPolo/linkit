@@ -1,23 +1,65 @@
 $(document).ready(function(){
-    $("#register").click(register);
+
+    register = new registerWrapper();
+    register.createCaptcha('captcha');
+  $("#captchaSubmit").click(register.register);
 });
-function register(){
-var username = $("#user").val(),
-    password = $("#pass").val();
-    email = $("#email").val();
 
-var passHash = (new jsSHA(password)).getHash('SHA-256','HEX');
-regApi = new apiWrapper('/api');
-regApi.callAPI('registerUser',{username:username,passHash:passHash,email:email},checkStatus);
-}
 
-function checkStatus(data){
-    if (data.error){
-        console.log('sorry brah,',data.error);
-        TINY.box.show({html:'<center><p>Error: '+data.error+'</p></center>', height:50,width:160,openjs:function(){$('.tinner').css('background','red')}});
-    }else if(data.register == "successful"){
+function registerjs(){};
+
+function registerWrapper(){
+
+var cappublickey = '6LdPvMwSAAAAALHpuivE73WXJOaokOX7ZZ5-Na9C';
+var regApi = new apiWrapper('/api');
+
+  var register = function (){
+
+  var username = $("#userReg").val()
+  , password = $("#passReg").val()
+  , email = $("#emailReg").val()
+  , challenge = Recaptcha.get_challenge()
+    response = Recaptcha.get_response();
+
+  var passHash = (new jsSHA(password)).getHash('SHA-256','HEX');
+
+  regApi.callAPI('registerUser',{username:username,passHash:passHash,email:email, challenge:challenge, response:response},checkStatus());
+  }
+
+  var checkStatus = function (){
+    return function(data){
+      if (data.error){
+        switch(data.error) {
+          case 'incorrect captcha':
+            console.log('incorrect captcha');
+            Recaptcha.reload();
+            break;
+          
+          default:
+            console.log('sorry brah,',data.error);
+        }
+      }else if(data.register == "successful"){
         //woo you are registered in!
-        TINY.box.show({html:'<center><p>success</p></center>', height:50,width:80,openjs:function(){$('.tinner').css('background','lightBlue')}});
+        console.log('you are now registered');
         document.cookie="sessionid="+data.sessionId;
+      }
     }
+  }
+
+  var createCaptcha = function (element){
+    Recaptcha.create(
+      cappublickey,
+      element,
+      { 
+        theme : "clean",
+        callback : Recaptcha.focus_response_field
+      });
+  }
+
+  registerjs.prototype = {
+    register : register
+  , createCaptcha : createCaptcha
+  }
+
+  return new registerjs();
 }

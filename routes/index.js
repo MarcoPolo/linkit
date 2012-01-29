@@ -3,6 +3,9 @@
  * GET home page.
  */
 
+var reCaptcha = require('recaptcha-async').reCaptcha
+  , recaptcha = new reCaptcha();
+
 
 exports.index = function(req, res){
     console.log(req.url);
@@ -26,3 +29,4 @@ exports.home = function(req, res){
 exports.register = function(req, res){
     res.render('register', { title: 'Register:' })
 }
+

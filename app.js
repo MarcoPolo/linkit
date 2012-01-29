@@ -1,11 +1,17 @@
 
 /**
+ * Definitions
+ */
+
+
+/**
  * Module dependencies.
  */
 
 var express = require('express')
-  , routes = require('./routes')
   , less = require('less')
+  , reCaptcha = require('recaptcha-async')
+  , routes = require('./routes')
   , apiRoute = require('./routes/api.js');
 
 var app = module.exports = express.createServer();
@@ -45,6 +51,10 @@ app.get('/register', routes.register);
 app.get('/home', routes.home);
 app.get('/go/:shortcut', apiRoute.router);
 app.post('/api/:signature', apiRoute.api);
+
+/*
+
+*/
 
 app.listen(3000);
 console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
