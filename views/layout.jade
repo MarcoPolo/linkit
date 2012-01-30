@@ -13,6 +13,7 @@ html
     <script src=/javascripts/jquery.js></script>
     <script src=/javascripts/less.js></script>
     <script src=/javascripts/login.js></script>
+    <script src=/javascripts/home.js></script>
     <script src=/javascripts/register.js></script>
     <script src="/javascripts/api.js"></script>
     <script src="/javascripts/sha.js"></script>
@@ -20,19 +21,20 @@ html
     <script src="/javascripts/bootstrap-modal.js"></script>
     <script type="text/javascript" src="http://www.google.com/recaptcha/api/js/recaptcha_ajax.js"></script>
     script(type="text/javascript", charset="utf-8")
+      showLynks = function(){
+        $('#lynks').addClass('active');
+        $('#home').removeClass('active');
+        $('#indexContent').fadeOut(function(){$('#linkContent').fadeIn();});
+      }
+      showHome = function(){
+        $('#home').addClass('active');
+        $('#lynks').removeClass('active');
+        $('#linkContent').fadeOut(function(){$('#indexContent').fadeIn();});
+      }
+
       $(document).ready(function(){
-
-          $('#lynks').click(function(){
-            $('#lynks').addClass('active');
-            $('#home').removeClass('active');
-            $('#indexContent').fadeOut(function(){$('#linkContent').fadeIn();});
-          });
-          $('#home').click(function(){
-            $('#home').addClass('active');
-            $('#lynks').removeClass('active');
-            $('#linkContent').fadeOut(function(){$('#indexContent').fadeIn();});
-          });
-
+          $('#lynks').click(showLynks);
+          $('#home').click(showHome);
       });
 
 

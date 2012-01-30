@@ -8,7 +8,7 @@ var reCaptcha = require('recaptcha-async').reCaptcha
 
 
 exports.index = function(req, res){
-    res.render('index.jade', { title: 'lynkit' , loggedin: '', user:'test'})
+    res.render('index.jade', { title: 'lynkit' , loggedin: true, user:'test'})
 };
 
 

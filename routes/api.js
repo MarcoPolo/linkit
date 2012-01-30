@@ -74,13 +74,13 @@ innards.createSession = function(userId, res){
                   if(error) console.log('something bad happened in registering the session',error);
                   else{
                     console.log('saved session');
-                    res.send({login:'successful',sessionId:sessionId});
                   }
                 });
                 var sessionId=session.sessionId
                 console.log('session is',session.sessionId);
             }
             
+            res.send({login:'successful',sessionId:sessionId});
         }
     );
 }
@@ -117,7 +117,7 @@ innards.registerUser = function(){
           res.send({register:"error",error:"sorry something bad happened in registration"});
         }else{
           console.log('successfully registered');
-          res.send({register:"successful",error:""});
+          api.login(parameters,res)
         }
       });
     }else{
@@ -209,6 +209,7 @@ exports.router = function(req, res){
     , host=req.headers.host
     , endIndex = host.indexOf(hostname)-1
     , username = host.substr(0,endIndex);
+
     console.log(req.headers.host);
     console.log(req.url);
     console.log(endIndex);
@@ -256,9 +257,36 @@ exports.router = function(req, res){
 
 
 exports.api = function(req, res){
-    var a = new apiWrapper('dfda');
-    
-    var sigcheck=a.checkSignature(req.body,req.params.signature,jsSHA);
-    if(sigcheck && api.hasOwnProperty(req.body.method)) api[req.body.method](req.body.parameters,res, req);
-    console.log(sigcheck);
+  var a = new apiWrapper();
+  
+  var sigcheck=a.checkSignature(req.body,req.params.signature,jsSHA);
+  if(sigcheck && api.hasOwnProperty(req.body.method)) api[req.body.method](req.body.parameters,res, req);
+  console.log(sigcheck);
 };
+
+exports.index = function(req, res){
+  var sessionId=req.cookies.sessionid;
+  if (sessionId == undefined){
+    console.log('sorry the session id is undefined');
+    res.render('index.jade', { title: 'lynkit' , loggedin: false, user:''});
+    return; //we are done here
+  }
+
+  sessionModel.findOne({sessionId:sessionId}, function(error, session) {
+    if (error || !session) {
+      console.log('something bad happened in getting the index page',error);
+      res.render('index.jade', { title: 'lynkit' , loggedin: false, user:''})
+      return;
+    }
+
+    console.log(session);
+    userModel.findOne({_id:session.userId}, function(error, user){
+      if (error || !user){
+        console.log('something bad happened in getting the user for the index page',error);
+        res.render('index.jade', { title: 'lynkit' , loggedin: false, user:''})
+        return;
+      }
+      res.render('index.jade', { title: 'lynkit' , loggedin: true, user:user.username})
+    });
+  });
+}

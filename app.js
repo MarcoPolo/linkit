@@ -43,7 +43,7 @@ app.configure('production', function(){
 
 app.get('/loginbox', routes.loginbox);
 app.get('/:shortcut', apiRoute.router);
-app.get('/', routes.index);
+app.get('/', apiRoute.index);
 app.get('/index', routes.index);
 app.get('/login', routes.login);
 app.get('/register', routes.register);

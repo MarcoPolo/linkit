@@ -14,16 +14,15 @@ var cappublickey = '6LdPvMwSAAAAALHpuivE73WXJOaokOX7ZZ5-Na9C';
 var regApi = new apiWrapper('/api');
 
   var register = function (){
+    var username = $("#userReg").val()
+    , password = $("#passReg").val()
+    , email = $("#emailReg").val()
+    , challenge = Recaptcha.get_challenge()
+      response = Recaptcha.get_response();
 
-  var username = $("#userReg").val()
-  , password = $("#passReg").val()
-  , email = $("#emailReg").val()
-  , challenge = Recaptcha.get_challenge()
-    response = Recaptcha.get_response();
+    var passHash = (new jsSHA(password)).getHash('SHA-256','HEX');
 
-  var passHash = (new jsSHA(password)).getHash('SHA-256','HEX');
-
-  regApi.callAPI('registerUser',{username:username,passHash:passHash,email:email, challenge:challenge, response:response},checkStatus());
+    regApi.callAPI('registerUser',{username:username,passHash:passHash,email:email, challenge:challenge, response:response},checkStatus());
   }
 
   var checkStatus = function (){
@@ -38,10 +37,11 @@ var regApi = new apiWrapper('/api');
           default:
             console.log('sorry brah,',data.error);
         }
-      }else if(data.register == "successful"){
+      }else if(data.login == "successful"){
         //woo you are registered in!
         console.log('you are now registered');
         document.cookie="sessionid="+data.sessionId;
+        window.location.reload();
       }
     }
   }

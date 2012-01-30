@@ -24,6 +24,7 @@ function loginWrapper(){
       //woo you are logged in!
       console.log('woo you are logged in');
       document.cookie="sessionid="+data.sessionId;
+      window.location.reload();
     }
   }
 
