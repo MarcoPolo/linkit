@@ -47,6 +47,10 @@ var api = {};
 
 var innards = {};
 
+innards.strip = function (html){
+  return html.replace(/<(?:.|\n)*?>/gm, '');
+}
+
 innards.randomId = function(){
     var id= '';
     for (var i = 0; i < 8; i++) {
@@ -137,13 +141,17 @@ api.registerUser = function(parameters,res, req){
 api.login = function(parameters,res){
     userModel.findOne({username:parameters.username},
         function(error, userRecord){
+                if(!userRecord) {
+                    res.send({login:'unsucessful',error:'sorry brah, wrong password or user'});
+                    return;
+                }
                 if(error) console.log('something bad happened in logging in the user',error);
                 console.log(userRecord);
                 if (userRecord.passHash === parameters.passHash && userRecord.username === parameters.username){
                     console.log('logging in', userRecord.username, userRecord._id);
                     innards.createSession(userRecord._id, res);
                 }else{
-                    res.send({login:'unsucessful',error:'sorry brah, wrong password'});
+                    res.send({login:'unsucessful',error:'sorry brah, wrong password or user'});
                 }
         }
     );
@@ -159,11 +167,15 @@ api.logout = function(parameters, res){
 api.createLink = function(parameters, res){
     sessionModel.findOne({sessionId:parameters.sessionId}, function(error, user) {
         if (error) console.log('something bad happened in getting the user for thelinks',error);
+        if (!user){
+          res.send({save:'unsuccessful'});
+          return;
+        }
 
         var link = new linkModel;
-        link.link = parameters.link;
-        link.title = parameters.title;
-        link.shortcut = parameters.shortcut;
+        link.link = innards.strip(parameters.link);
+        link.title = innards.strip(parameters.title);
+        link.shortcut = innards.strip(parameters.shortcut);
         link.userId = user.userId;
         link.save( function(error){
             if(error) {
@@ -178,24 +190,29 @@ api.createLink = function(parameters, res){
 }
 
 api.removeLinks = function(parameters, res){
-    sessionModel.findOne({sessionId:parameters.sessionId}, function(error, user) {
+    sessionModel.findOne({sessionId:parameters.sessionId}, function(error, session) {
         if (error) console.log('something bad happened in getting the user for thelinks',error);
 
-        linkModel.remove({userId:user._id,_id:parameters.linkId},function(error){
+        linkModel.remove({userId:session.userId,_id:parameters.linkid},function(error, link){
             if (error) console.log('something bad happened in removing the link',error);
+            console.log('the link is',link);
+            api.getLinks(parameters, res);
         });
     });
 }
 
 api.getLinks = function(parameters, res){
     console.log(parameters);
-    if(parameters.sessionId == 'undefined'){
+    if(parameters.sessionId == 'undefined' || parameters.sessionId == ''){
         res.send({error:'login'});
         return;
     }
     sessionModel.findOne({sessionId:parameters.sessionId}, function(error, user) {
         if (error) console.log('something bad happened in getting the user for thelinks',error);
-        if(!user) res.send({error:'login'});
+        if(!user) {
+          res.send({error:'login'});
+          return;
+        }
         linkModel.find({userId:user.userId},function(error,links){
             if (error) console.log('something bad happened in getting the links',error);
             res.send({links:links});
@@ -266,7 +283,7 @@ exports.api = function(req, res){
 
 exports.index = function(req, res){
   var sessionId=req.cookies.sessionid;
-  if (sessionId == undefined){
+  if (sessionId == undefined || !sessionId){
     console.log('sorry the session id is undefined');
     res.render('index.jade', { title: 'lynkit' , loggedin: false, user:''});
     return; //we are done here
@@ -274,7 +291,7 @@ exports.index = function(req, res){
 
   sessionModel.findOne({sessionId:sessionId}, function(error, session) {
     if (error || !session) {
-      console.log('something bad happened in getting the index page',error);
+      if (error) console.log('something bad happened in getting the index page',error);
       res.render('index.jade', { title: 'lynkit' , loggedin: false, user:''})
       return;
     }

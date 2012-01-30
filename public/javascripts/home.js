@@ -7,6 +7,7 @@ homeWrapper = function(){
         linkTitle = '#linkTitle',
         linkUrl = '#linkUrl',
         linkShortcut = '#linkShortcut',
+        deleteLink = '.deleteButton',
         createLinkId = '#createLink';
 
     var api = new apiWrapper('/api');
@@ -17,10 +18,18 @@ homeWrapper = function(){
         api.callAPI('getLinks',{sessionId:sessionId},printLinks);
     }
 
+    function removeLink(){
+      return function(){
+        var linkid = $(this).attr('id');
+        api.callAPI('removeLinks',{sessionId:sessionId, linkid:linkid},printLinks);
+      }
+    }
+
     function printLinks(data){
         var links = data.links;
         console.log(data.error);
         if (data.error == 'login'){
+          showHome();
           return;
         }
         $(linkContainer).html('');
@@ -33,11 +42,15 @@ homeWrapper = function(){
         for (var i = 0; i < links.length; i++) {
             var html = '';
             html += '<div class=row>';
-            html += '<div class=span2><a class title href'+links[i].link+'>'+links[i].title +'</a> </div>';
+            html += '<div class=span2><a class=title href='+links[i].link+'>'+links[i].title +'</a> </div>';
             html += '<div class=span2><span class=shortcut>'+ links[i].shortcut+'</span></div>';
+            html += '<div class=span2><button class="btn small danger deleteButton" id='+ links[i]._id+'>Delete</span></div>';
             html += '</div>';
+            html += '<br/>';
             $(linkContainer).append(html);
         };
+
+        $(deleteLink).click(removeLink())
         $(linkTitle).val('');
         $(linkUrl).val('');
         $(linkShortcut).val('');

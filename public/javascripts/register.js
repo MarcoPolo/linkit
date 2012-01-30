@@ -3,6 +3,7 @@ $(document).ready(function(){
     register = new registerWrapper();
     register.createCaptcha('captcha');
   $("#captchaSubmit").click(register.register);
+  $('#captcha-modal').bind('shown',Recaptcha.focus_response_field);
 });
 
 

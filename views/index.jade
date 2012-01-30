@@ -10,7 +10,7 @@ body
           li(class="", id="lynks")
             a(href="#") Lynks
           li(class="", id="home")
-            a(href="#") Contact
+            a(href="https://github.com/MarcoPolo/linkit/issues") Bugs
 
         - if (!loggedin)
           form(action="#", class="pull-right", id="loginForm")
@@ -19,6 +19,7 @@ body
             button(class="btn",id="login") Sign in
             
         - else 
+          button(class="pull-right btn", id="logout") Logout
           .pull-right
             p(style="color:white; font-size:14px;") #{user}   
                 
@@ -34,9 +35,36 @@ body
           - if (loggedin)
             .span12(style="min-height:500px;")
               h2 How it works:
+              .row
+                p &nbsp;&nbsp; This site keeps track of all those other sites.
+              blockquote Its like an extension of your brain into the cloud!
+              .row
+              br /
+
+              dl
+                dt First:
+                  dd Register
+                dt Second:
+                  dd Add sites to your lynks
+                dt Third:
+                  dd Access your lynk through username.lynkit.org/shortcut
           - else
             .span8
               h2 How it works:
+              .row
+                p &nbsp;&nbsp; This site keeps track of all those other sites.
+              blockquote Its like an extension of your brain into the cloud!
+              .row
+              br /
+
+              dl
+                dt First:
+                  dd Register
+                dt Second:
+                  dd Add sites to your lynks
+                dt Third:
+                  dd Access your lynk through username.lynkit.org/shortcut
+
             .span4
               h3 Registration
                 form(action="#", class="pull-right")
@@ -65,7 +93,7 @@ body
                       #captcha
                     .modal-footer
                       a(id="captchaSubmit", href="#", class="btn info") Sign Up
-                  a(class="btn info", data-controls-modal="captcha-modal", data-backdrop="static") Sign Up!
+                  a(id="signupb4Captcha", class="btn info", data-controls-modal="captcha-modal", data-backdrop="static") Sign Up!
 
       #linkContent(style="display:none; min-height:500px")
         .row
@@ -94,7 +122,7 @@ body
             .input-prepend
               span(class="add-on") Shortcut
               input(class="small", id="linkShortcut", name="prependedInput", size="16", type="text")
-            span(class="help-block") small word that reminds you of the site
+            span(class="help-block") Short word that reminds you of the site
             .span2
               a(class="btn info pull-right", id="createLink", data-backdrop="static") add lynk
 

@@ -67,5 +67,25 @@
         top:-64px;
       }
 
+      .deleteButton {
+        position: relative;
+        top: -5px;
+      }
+
+      #logout {
+        position: relative;
+        top: 7px;
+        right: -20px;
+      }
+
+      dl dt {
+        padding: 10px;
+      }
+
+      dl dd {
+        margin-left: 25px;
+        border-left: 5px solid #eee;
+      }
+
 
     </style>
