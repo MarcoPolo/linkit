@@ -3,9 +3,9 @@ body
   .topbar
     .fill
       .container
-        a(style="font-family: 'Magra', sans-serif",class="brand",href="#") lynkit.org
+        a(style="font-family: 'Magra', sans-serif",class="brand home",href="#") lynkit.org
         ul(class="nav")
-          li(class="active", id="home")
+          li(class="active", class="home")
             a(href="#") Home
           li(class="", id="lynks")
             a(href="#") Lynks
@@ -19,6 +19,8 @@ body
             button(class="btn",id="login") Sign in
             
         - else 
+          script
+            username="#{user}"
           button(class="pull-right btn", id="logout") Logout
           .pull-right
             p(style="color:white; font-size:14px;") #{user}   
@@ -33,7 +35,7 @@ body
       #indexContent
         .row
           - if (loggedin)
-            .span12(style="min-height:500px;")
+            .span12(style="min-height:300px;")
               h2 How it works:
               .row
                 p &nbsp;&nbsp; This site keeps track of all those other sites.
@@ -95,7 +97,7 @@ body
                       a(id="captchaSubmit", href="#", class="btn info") Sign Up
                   a(id="signupb4Captcha", class="btn info", data-controls-modal="captcha-modal", data-backdrop="static") Sign Up!
 
-      #linkContent(style="display:none; min-height:500px")
+      #linkContent(style="display:none; min-height:200px")
         .row
           .span12
             h2 Your links:

@@ -35,18 +35,20 @@ homeWrapper = function(){
         $(linkContainer).html('');
           var html = '';
           html += '<div class=row>';
-          html += '<div class=span2><p>Title:</p></div>';
-          html += '<div class=span2><p>Shortcut:</p></div>';
+          html += '<div class=span2><p id=titleHead>Title:</p></div>';
+          html += '<div class=span2><p id=shortcutHead>Shortcut:</p></div>';
           html += '</div>';
           $(linkContainer).append(html);
         for (var i = 0; i < links.length; i++) {
             var html = '';
             html += '<div class=row>';
-            html += '<div class=span2><a class=title href='+links[i].link+'>'+links[i].title +'</a> </div>';
-            html += '<div class=span2><span class=shortcut>'+ links[i].shortcut+'</span></div>';
+            //html += '<div class=span2><span id=favicon style="background:url('+links[i].link+'/favicon.ico)"'+'></span><span class=title >'+links[i].title +'</span> </div>';
+            html += '<div class=span2><span class=title >'+links[i].title +'</span> </div>';
+            html += '<div class=span3><a target="_blank" class=shortcut href=http://'+username+'.lynkit.org/' + links[i].shortcut+'>'+username+'.lynkit.org/' + links[i].shortcut+'</a></div>';
             html += '<div class=span2><button class="btn small danger deleteButton" id='+ links[i]._id+'>Delete</span></div>';
             html += '</div>';
             html += '<br/>';
+            console.log(links[i].link)
             $(linkContainer).append(html);
         };
 

@@ -48,7 +48,7 @@ var api = {};
 var innards = {};
 
 innards.strip = function (html){
-  return html.replace(/<(?:.|\n)*?>/gm, '');
+  return html.replace(/<(?:.|\n)*?>/gm, '').replace(/\/$/g,'');
 }
 
 innards.randomId = function(){
@@ -106,9 +106,8 @@ innards.verifyCaptcha = function(parameters, res, req, callback){
 
 innards.registerUser = function(){
   return function (captchaResponse, parameters, res){
-    //if(captchaResponse.is_valid && captchaResponse.error == "success"){
-    console.log(parameters)
-    if(captchaResponse){
+    if(captchaResponse.is_valid && captchaResponse.error == "success"){
+    //if(captchaResponse){
       html = "valid answer";
       var user = new userModel(); 
       user.username=parameters.username;
@@ -244,6 +243,10 @@ exports.router = function(req, res){
         sessionModel.findOne({sessionId:sessionId}, function(error, user) {
             if (error) console.log('something bad happened in getting the routing',error);
             linkModel.findOne({userId:user.userId,shortcut:shortcut}, function(error, link){
+                if(error || !link){
+                    res.redirect('/');
+                    return;
+                }
                 res.redirect(link.link);
             });
         });
